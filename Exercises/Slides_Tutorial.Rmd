@@ -1,0 +1,107 @@
+---
+title: "Title"
+author: "Author"
+date: "04/12/2023"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Overview 
+
+While there are others, I recommend using one of the three following presentation formats. (Note: You can change the format in the `output` parameter in the header of the `.rmd` file.)
+
+- `beamer_presentation` for making .pdf slides (using a .tex engine)
+- `ioslides_presentation` for making .html files 
+- `slidy_presentation` for making .html files
+
+## Syntax
+
+The syntax for R Markdown slides is similar to creating R Markdown documents (like problem sets).
+
+We can write sentences using __bold face__, _italics_, using [links](http://ppol670.alexanderpodkul.com) or also make equations like 
+
+$$ x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+
+We can also (Note: replace with - for unnumbered): 
+
+1. write 
+2. numbered 
+3. lists 
+
+
+
+## Syntax (Continued)
+
+We can also continue to write code. 
+
+```{r, echo=T}
+example_code <- 'This will be printed'
+```
+
+```{r, echo = F}
+example_code2 <- 'This will not be printed'
+```
+
+Remember, in the header to the code chunk:
+
+- `echo` - TRUE/FALSE - will printthe code in our output
+- `eval` - TRUE/FALSE - will _evaluate_ the code chunk 
+- `warning` - TRUE/FALSE - will print any warnings that the code produces
+- `message` - TRUE/FALSE - will print any messages that the code produces
+
+(or set globally in line 9)
+
+## Creating New Slides 
+
+The only major difference is that `## Title` creates a new slide in our deck(!)  
+
+## Adding Visualizations 
+
+```{r, echo = F, eval=T, fig.align='center', out.height='90%', out.width='90%'}
+library(ggplot2)
+library(ggthemes)
+data <- data.frame(x = 1:500, 
+                   y = rnorm(n = 500, mean = 10, sd = 30)
+                   )
+
+ggplot(data) + 
+  geom_density(aes(x = y)) + 
+  theme_igray()
+
+```
+
+
+## Common Pitfalls and Advice
+
+__Common Pitfalls__
+
+- Having stray spaces (in slide names or in lists)
+- Re-running timely models every time you "knit"
+- Forgetting to start a new slide
+
+
+__Advice__
+
+- When starting out, __Knit__ after each slide is done (to isolate errors)
+- Only include the data and code that you need
+- Run code chunk by chunk to isolate errors
+
+
+## Resources 
+
+Useful documentation: 
+
+- [R Markdown Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) 
+- [ioslides Documentation](https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html)
+- [Slidy Documentation](https://bookdown.org/yihui/rmarkdown/slidy-presentation.html)
+- [beamer Documentation](https://bookdown.org/yihui/rmarkdown/beamer-presentation.html)
+
+
+Additional customization: 
+
+- [Using beamer](https://bookdown.org/yihui/rmarkdown/beamer-presentation.html#themes)
+- [Using Slidy](https://garrettgman.github.io/rmarkdown/slidy_presentation_format.html#appearance_and_style)
+- [Using ioslides](https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html#custom-templates-2)
