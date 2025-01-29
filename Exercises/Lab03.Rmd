@@ -1,0 +1,143 @@
+---
+title: "Example Markdown File"
+author: "Your Name Here"
+date: "01/29/2025"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+```
+
+## R Markdown 
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>. Additionally, there is a useful cheat sheet of commands [here.](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf)
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+### 1-1
+```{r pset1_1}
+data('attitude') #Preloaded dataset
+summary(attitude$critical)
+
+#My answer is this as a comment.
+
+```
+Or my answer can be written here
+
+
+### Example: Privileges
+```{r, echo = F, eval = T}
+summary(attitude$privileges)
+```
+
+```{r, echo = T}
+plot(attitude$learning, attitude$complaints)
+```
+
+
+## Regularly Scheduled Lab 
+```{r}
+library(dplyr)
+census_data <- read.csv('https://github.com/apodkul/ppol6803_03/raw/refs/heads/main/Data/census_demo.csv')
+
+summary(census_data) 
+head(census_data)
+```
+
+### Using Piping 
+```{r, eval = F, echo = T}
+glimpse(census_data) # provides summary of the data 
+
+#... is equivalent to 
+census_data %>%
+  glimpse()
+
+# why didn't this one print on the page?
+```
+
+### Creating New Variables 
+```{r, eval = F, echo = T}
+census_data %>% 
+  mutate(total_aa = AA_MALE + AA_FEMALE)
+
+census_data %>% 
+  mutate(maj_white = white_alone_perc > .5)
+```
+
+```{r}
+census_data <- census_data %>% 
+  mutate(total_aa = AA_MALE + AA_FEMALE, 
+         maj_white = white_alone_perc > .5)
+```
+
+### Subsetting Data 
+```{r, eval = F, echo = T}
+census_data %>% 
+  select(STNAME, TOT_POP, hispanic_perc)
+
+census_data %>% 
+  filter(STNAME == 'New Jersey')
+
+census_data %>% 
+  filter(STNAME != 'New Jersey' & white_alone_perc < .7)
+```
+
+
+### Joining Data Frames
+```{r, eval = F}
+census_regions <- read.csv('https://github.com/apodkul/ppol6803_03/raw/refs/heads/main/Data/census_regions.csv')
+
+census_data %>% 
+  select(STNAME, CTYNAME, hispanic_perc)
+
+census_data %>% 
+  select(STNAME, CTYNAME, hispanic_perc) %>%
+  left_join(y = census_regions, 
+            by = c('STNAME' = 'State.Name'))
+
+table(census_data$STNAME)
+table(census_regions$State.Name)
+```
+
+```{r, eval = T, echo = T}
+census_regions <- read.csv('https://github.com/apodkul/ppol6803_03/raw/refs/heads/main/Data/census_regions.csv')
+
+census_data <- census_data %>% 
+  left_join(y = census_regions, 
+            by = c('STNAME' = 'State.Name'))
+
+```
+
+
+
+### Collapsing 
+```{r eval=F, echo=F}
+census_data %>%
+  summarise(Population = sum(TOT_POP))
+
+census_data %>%
+  group_by(Region) %>%
+  summarise(Population = sum(TOT_POP))
+```
+
+### Reshaping Data 
+
+```{r, echo = T}
+library(tidyr)
+
+#Creating a more manageable dataset 
+test_data <- census_data %>% 
+  select(STNAME, CTYNAME, TOT_POP, TOT_MALE, TOT_FEMALE)
+
+#From wide to long 
+test_data_w <- test_data %>% 
+  pivot_longer(cols = TOT_POP:TOT_FEMALE, 
+               names_to = "var_name")
+
+#Going back (long to wide)
+test_data_l <- test_data_w %>%
+  pivot_wider(id_cols = STNAME:CTYNAME, 
+              names_from = var_name, 
+              values_from = value)
+```
