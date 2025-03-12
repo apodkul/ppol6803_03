@@ -1,0 +1,66 @@
+---
+title: "Making .pdf Files (Sample)"
+author: "PPOL 6803-03"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE)
+
+#install.packages("tinytex")
+#tinytex::install_tinytex()
+```
+
+Here we want to show how to make .pdfs using R Markdown. Fortunately, it's fundamentally the same as making .html files -- we just have to swap out our output type!  
+
+Just like in .html files, there are a few fun features we can do in the "text" portion of Markdown. For example, we can add footnotes^[Such as the footnote here!] and also add hyperlinks. We can add hyperlinks to external websites like [this](www.google.com), by including any website url like http://ppol_6803.alexanderpodkul.com/syllabus.html, and by referencing different parts of this document such as [Splitting Data]! 
+
+- We can also 
+- Create bullet points
+- Like this
+
+or we can create numbered lists like
+
+1. list
+2. can go 
+3. here
+
+
+## Header 
+Section introduction text can go here
+
+### Sub-Heading Example
+
+Here we can include code if we want:
+
+```{r, echo = T, eval = T, message=F, warning=F}
+library(dplyr)
+
+url <- 'https://raw.githubusercontent.com/apodkul/ppol6803_03/main/Data/life_expect.csv'
+ctry_data <- read.csv(url)
+
+ctry_data %>% 
+  glimpse()
+
+```
+
+### Another Sub-Heading Example
+
+Or we can include the code output, without the code: 
+
+```{r, echo = F, eval = T, message=F, warning=F}
+library(ggplot2)
+
+ggplot(ctry_data, aes(x = Population)) + 
+  geom_histogram(fill = 'gray', color = 'navy') + 
+  scale_x_log10(labels = scales::label_log()) + 
+  ggthemes::theme_stata() + 
+  labs(title = 'Title can go here', 
+       subtitle = 'Subtitle can go here', 
+       caption = 'Data source: Wherever Prof. Podkul found this')
+```
+
+
+
+
