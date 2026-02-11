@@ -8,13 +8,15 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, eval = TRUE, 
                       message = FALSE, warning = FALSE)
+
 ```
+
+
 
 ## Loading Data
 ```{r loading}
 library(dplyr)
 library(ggplot2)
-
 life <- read.csv('https://github.com/apodkul/ppol6803_03/raw/main/Data/life_expect.csv')
 
 life %>% 
@@ -45,6 +47,17 @@ We're going to take five minutes to do a paired coding assignment. Find a partne
 ```{r question1}
 #1: Using dplyr commands and ggplot2, display the _median_ 
 # life expectancy by Continent in a bar chart. Try to use one piped command.
+life %>% 
+  ggplot(aes(x = Continent, y = life_expectancy)) + 
+  geom_bar(stat = 'summary', fun = median)
+  
+
+life %>% 
+  group_by(Continent) %>% 
+  summarize(Median = median(life_expectancy)) %>%
+  ggplot(aes(x = Continent, y = Median))  +
+  geom_bar(stat = 'identity')
+
 
 ```
 
@@ -52,6 +65,11 @@ We're going to take five minutes to do a paired coding assignment. Find a partne
 #1: Using dplyr commands and ggplot2, create a histogram of 
 #GDP per capita with separate panels for each Continent. 
 #Use a non-default ggplot2 theme 
+life %>% 
+  ggplot(aes(x = GDP_per_capita)) + 
+  geom_histogram() + 
+  facet_wrap(~Continent) + 
+  theme_linedraw()
 
 ```
 
