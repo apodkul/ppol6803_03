@@ -103,14 +103,17 @@ eu_shape %>%
   ggplot(aes(fill = values, color = values)) + 
   geom_sf() 
 
-eu_crop <- st_crop(eu_shape, 
+eu_shape2 <- eu_shape %>% 
+  left_join(eu_data, by = c('NUTS_ID' = 'geo'))
+
+eu_crop2 <- st_crop(eu_shape2, 
                    c(xmin = -20, 
                      xmax = 40, 
                      ymin = 30, 
-                     ymax = 75))
-eu_crop %>% 
-  left_join(eu_data, by = c('NUTS_ID' = 'geo')) %>%
+                     ymax = 75)
+                   )
+eu_crop2 %>% 
   ggplot(aes(fill = values, color = values)) + 
   geom_sf() +
-  #coord_sf() + 
+  coord_sf() + 
   theme_void()
